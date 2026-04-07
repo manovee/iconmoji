@@ -78,10 +78,10 @@ const ICON_ALIASES: Partial<Record<LucideIconName, string[]>> = {
 export const LUCIDE_ICON_NAMES = Object.keys(lucideIcons)
   .sort((left, right) => left.localeCompare(right)) as LucideIconName[];
 
-const LUCIDE_SEARCH_INDEX = LUCIDE_ICON_NAMES.map((name) => ({
-  name,
-  haystack: createSearchText(name)
-}));
+const LUCIDE_ICON_NAMES_SET = new Set<LucideIconName>(LUCIDE_ICON_NAMES);
+const LUCIDE_SEARCH_INDEX = new Map(
+  LUCIDE_ICON_NAMES.map((name) => [name, createSearchText(name)])
+);
 
 function createSearchText(name: LucideIconName): string {
   const tokens = tokenizeSearch(name);
@@ -105,13 +105,28 @@ function createSearchText(name: LucideIconName): string {
   return Array.from(expandedTerms).join(' ');
 }
 
-export function filterLucideIcons(query: string): LucideIconName[] {
-  const normalizedQuery = normalizeSearch(query);
-  if (!normalizedQuery) return LUCIDE_ICON_NAMES;
+function resolveLucideIconNames(iconNames?: string[]): LucideIconName[] {
+  if (!iconNames?.length) return LUCIDE_ICON_NAMES;
 
-  return LUCIDE_SEARCH_INDEX
-    .filter((entry) => matchesAllTokens(entry.haystack, normalizedQuery))
-    .map((entry) => entry.name);
+  const uniqueNames: LucideIconName[] = [];
+  const seen = new Set<LucideIconName>();
+
+  for (const name of iconNames) {
+    const candidate = name as LucideIconName;
+    if (!LUCIDE_ICON_NAMES_SET.has(candidate) || seen.has(candidate)) continue;
+    seen.add(candidate);
+    uniqueNames.push(candidate);
+  }
+
+  return uniqueNames.length > 0 ? uniqueNames : LUCIDE_ICON_NAMES;
+}
+
+export function filterLucideIcons(query: string, iconNames?: string[]): LucideIconName[] {
+  const availableIcons = resolveLucideIconNames(iconNames);
+  const normalizedQuery = normalizeSearch(query);
+  if (!normalizedQuery) return availableIcons;
+
+  return availableIcons.filter((name) => matchesAllTokens(LUCIDE_SEARCH_INDEX.get(name) ?? '', normalizedQuery));
 }
 
 export function getLucideIcon(name?: string) {

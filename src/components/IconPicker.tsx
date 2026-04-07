@@ -33,12 +33,26 @@ export function IconPicker({
   panelClassName,
   closeOnSelect = true,
   disabled = false,
+  open: openProp,
+  defaultOpen = false,
+  onOpenChange,
   ...panelProps
 }: IconPickerProps) {
-  const [open, setOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const panelId = useId();
   const triggerLabel = useMemo(() => getTriggerLabel(value), [value]);
+  const open = openProp ?? uncontrolledOpen;
+
+  const setOpen = (nextOpen: boolean | ((current: boolean) => boolean)) => {
+    const resolvedOpen = typeof nextOpen === 'function' ? nextOpen(open) : nextOpen;
+
+    if (openProp === undefined) {
+      setUncontrolledOpen(resolvedOpen);
+    }
+
+    onOpenChange?.(resolvedOpen);
+  };
 
   useEffect(() => {
     if (!open) return undefined;

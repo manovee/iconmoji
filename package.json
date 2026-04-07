@@ -1,5 +1,5 @@
 {
-  "name": "@manoharv/iconpicker",
+  "name": "@manovee/iconmoji",
   "version": "0.1.0",
   "description": "A lightweight icon picker for React and Next.js apps with Lucide and emoji support.",
   "type": "module",
@@ -17,11 +17,16 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": [
     "./dist/styles.css"
   ],
   "scripts": {
     "build": "tsup && node scripts/copy-css.mjs",
+    "prepublishOnly": "npm run typecheck && npm run build",
+    "preview": "npm run build && python3 -m http.server 4173",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [

@@ -42,6 +42,8 @@ export interface IconPickerPanelProps {
   onChange: (value: IconPickerValue) => void;
   tabs?: IconType[];
   initialTab?: IconType;
+  searchable?: boolean;
+  iconNames?: string[];
   panelHeight?: number;
   emojiColumns?: number;
   className?: string;
@@ -56,4 +58,7 @@ export interface IconPickerProps extends Omit<IconPickerPanelProps, 'id' | 'clas
   panelClassName?: string;
   closeOnSelect?: boolean;
   disabled?: boolean;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
