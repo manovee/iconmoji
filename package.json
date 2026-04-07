@@ -1,0 +1,45 @@
+{
+  "name": "@manoharv/iconpicker",
+  "version": "0.1.0",
+  "description": "A lightweight icon picker for React and Next.js apps with Lucide and emoji support.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "./dist/styles.css"
+  ],
+  "scripts": {
+    "build": "tsup && node scripts/copy-css.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "icon-picker",
+    "react",
+    "nextjs",
+    "lucide",
+    "emoji",
+    "shadcn"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "lucide-react": "^0.522.0",
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3"
+  }
+}
