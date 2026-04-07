@@ -12,8 +12,10 @@ The package does not depend on MUI, shadcn/ui, Tailwind, or Radix. Runtime peers
 
 ## Install
 
+Once you publish the package, install it together with its peer dependencies:
+
 ```bash
-npm install react lucide-react
+npm install @manoharv/iconpicker react lucide-react
 ```
 
 For local development in this repo:
