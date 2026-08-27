@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useDeferredValue, useMemo, useState } from 'react';
-import { Image as ImageIcon, Search as SearchIcon, Smile } from 'lucide-react';
+import { Search as SearchIcon, Smile, Sparkles, X } from 'lucide-react';
 import { filterEmojiCategories } from '../data/emojis';
 import { filterLucideIcons, getLucideIcon, humanizeIconName } from '../data/lucideSearch';
 import type { IconPickerLabels, IconPickerPanelProps, IconType } from '../types';
@@ -78,7 +78,7 @@ export function IconPickerPanel({
                 setLucideQuery('');
                 setEmojiQuery('');
               }}>
-              <ImageIcon size={16} />
+              <Sparkles size={15} />
               <span>{mergedLabels.lucideTab}</span>
             </button>
           ) : null}
@@ -93,7 +93,7 @@ export function IconPickerPanel({
                 setLucideQuery('');
                 setEmojiQuery('');
               }}>
-              <Smile size={16} />
+              <Smile size={15} />
               <span>{mergedLabels.emojiTab}</span>
             </button>
           ) : null}
@@ -102,7 +102,7 @@ export function IconPickerPanel({
 
       {searchable ? (
         <div className="icon-picker__search">
-          <SearchIcon size={16} className="icon-picker__search-icon" />
+          <SearchIcon size={15} className="icon-picker__search-icon" />
           <input
             type="search"
             value={activeTab === 'emoji' ? emojiQuery : lucideQuery}
@@ -116,6 +116,19 @@ export function IconPickerPanel({
             placeholder={activeTab === 'emoji' ? mergedLabels.searchEmoji : mergedLabels.searchLucide}
             className="icon-picker__search-input"
           />
+          {activeQuery ? (
+            <button
+              type="button"
+              onClick={() => {
+                if (activeTab === 'emoji') setEmojiQuery('');
+                else setLucideQuery('');
+              }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'inherit', opacity: 0.6 }}
+              aria-label="Clear"
+            >
+              <X size={14} />
+            </button>
+          ) : null}
         </div>
       ) : null}
 
@@ -124,23 +137,25 @@ export function IconPickerPanel({
           filteredLucide.length === 0 ? (
             <EmptyResults message={mergedLabels.noResults(activeQuery)} />
           ) : (
-            <div className="icon-picker__grid" aria-label={mergedLabels.lucideTab}>
-              {filteredLucide.map((name) => {
-                const Icon = getLucideIcon(name);
-                const isSelected = value.type === 'lucide' && value.value === name;
+            <div>
+              <div className="icon-picker__grid" aria-label={mergedLabels.lucideTab}>
+                {filteredLucide.map((name) => {
+                  const Icon = getLucideIcon(name);
+                  const isSelected = value.type === 'lucide' && value.value === name;
 
-                return (
-                  <button
-                    key={name}
-                    type="button"
-                    className={cx('icon-picker__item', isSelected && 'is-selected')}
-                    aria-pressed={isSelected}
-                    title={humanizeIconName(name)}
-                    onClick={() => onChange({ type: 'lucide', value: name })}>
-                    <Icon size={22} />
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={name}
+                      type="button"
+                      className={cx('icon-picker__item', isSelected && 'is-selected')}
+                      aria-pressed={isSelected}
+                      title={humanizeIconName(name)}
+                      onClick={() => onChange({ type: 'lucide', value: name })}>
+                      <Icon size={20} />
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )
         ) : filteredEmojis.length === 0 ? (

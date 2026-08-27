@@ -121,10 +121,25 @@ function resolveLucideIconNames(iconNames?: string[]): LucideIconName[] {
   return uniqueNames.length > 0 ? uniqueNames : LUCIDE_ICON_NAMES;
 }
 
+export const DEFAULT_CURATED_ICONS: LucideIconName[] = [
+  'Sparkles', 'BarChart3', 'PieChart', 'LineChart', 'TrendingUp', 'Building2',
+  'Briefcase', 'Folder', 'Database', 'Globe', 'Users', 'Rocket',
+  'Zap', 'ShieldCheck', 'Target', 'Layers', 'Boxes', 'Workflow',
+  'FileText', 'Bookmark', 'Star', 'Tag', 'Activity', 'CheckSquare',
+  'Code2', 'Terminal', 'Server', 'Cloud', 'Wallet', 'CreditCard',
+  'ShoppingBag', 'Store', 'Megaphone', 'Compass', 'Headphones', 'Settings',
+  'Key', 'Lock', 'Mail', 'MessageSquare', 'Cpu', 'Coins',
+  'DollarSign', 'Calendar', 'Flame', 'Heart', 'Palette', 'Lightbulb',
+  'Flag', 'Atom', 'Presentation', 'Calculator', 'Wrench', 'Shield'
+] as LucideIconName[];
+
 export function filterLucideIcons(query: string, iconNames?: string[]): LucideIconName[] {
   const availableIcons = resolveLucideIconNames(iconNames);
   const normalizedQuery = normalizeSearch(query);
-  if (!normalizedQuery) return availableIcons;
+  if (!normalizedQuery) {
+    if (iconNames?.length) return availableIcons;
+    return DEFAULT_CURATED_ICONS;
+  }
 
   return availableIcons.filter((name) => matchesAllTokens(LUCIDE_SEARCH_INDEX.get(name) ?? '', normalizedQuery));
 }
