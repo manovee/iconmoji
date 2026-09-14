@@ -22,7 +22,6 @@ html[data-theme="dark"] {
 
 html {
   background-color: var(--page-bg-base, #09111f);
-  overscroll-behavior-y: none;
   transition: background-color 0.25s ease;
 }
 
@@ -35,7 +34,6 @@ body {
 body {
   min-height: 100vh;
   background-color: var(--page-bg-base, #09111f);
-  overscroll-behavior-y: none;
   transition: background-color 0.25s ease;
 }
 
@@ -340,7 +338,6 @@ pre {
   background: var(--preview-code-bg);
   min-height: 520px;
   overflow: auto;
-  overscroll-behavior: contain;
   padding: 18px;
 }
 
@@ -481,7 +478,6 @@ pre {
 
 .preview-table-wrap {
   overflow: auto;
-  overscroll-behavior: contain;
 }
 
 .preview-table {
