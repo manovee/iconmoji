@@ -3,7 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#09111f" />
     <title>iconmoji preview</title>
+    <script>
+      (function () {
+        try {
+          var storedTheme = localStorage.getItem("iconmoji-preview-theme");
+          var theme =
+            storedTheme === "light" || storedTheme === "dark"
+              ? storedTheme
+              : window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+          document.documentElement.setAttribute("data-theme", theme);
+          document.documentElement.style.colorScheme = theme;
+          var themeBg = theme === "dark" ? "#09111f" : "#f7f1ea";
+          document.documentElement.style.backgroundColor = themeBg;
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute("content", themeBg);
+        } catch (e) {}
+      })();
+    </script>
     <link rel="stylesheet" href="../dist/styles.css" />
     <link rel="stylesheet" href="./preview.css" />
     <script type="importmap">

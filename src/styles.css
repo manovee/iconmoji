@@ -234,6 +234,7 @@
 .icon-picker__body {
   height: var(--icon-picker-panel-height);
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 12px;
 }
 

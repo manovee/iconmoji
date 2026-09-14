@@ -333,6 +333,17 @@ function App() {
     try {
       globalThis.localStorage?.setItem(THEME_STORAGE_KEY, theme);
     } catch {}
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.style.colorScheme = theme;
+    const themeBg = theme === "dark" ? "#09111f" : "#f7f1ea";
+    document.documentElement.style.backgroundColor = themeBg;
+    if (document.body) {
+      document.body.style.backgroundColor = themeBg;
+    }
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute("content", themeBg);
+    }
   }, [theme]);
 
   const pageStyle = {

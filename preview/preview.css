@@ -1,9 +1,29 @@
 :root {
   font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color-scheme: dark;
+  --page-bg-base: #09111f;
+}
+
+:root[data-theme="light"],
+html[data-theme="light"] {
+  color-scheme: light;
+  --page-bg-base: #f7f1ea;
+}
+
+:root[data-theme="dark"],
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --page-bg-base: #09111f;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  background-color: var(--page-bg-base, #09111f);
+  overscroll-behavior-y: none;
+  transition: background-color 0.25s ease;
 }
 
 html,
@@ -14,6 +34,9 @@ body {
 
 body {
   min-height: 100vh;
+  background-color: var(--page-bg-base, #09111f);
+  overscroll-behavior-y: none;
+  transition: background-color 0.25s ease;
 }
 
 button,
@@ -317,6 +340,7 @@ pre {
   background: var(--preview-code-bg);
   min-height: 520px;
   overflow: auto;
+  overscroll-behavior: contain;
   padding: 18px;
 }
 
@@ -457,6 +481,7 @@ pre {
 
 .preview-table-wrap {
   overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .preview-table {
