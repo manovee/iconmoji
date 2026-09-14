@@ -1,23 +1,37 @@
 # iconmoji
 
-A small icon picker package for React and Next.js apps. It ships with:
+[![npm version](https://img.shields.io/npm/v/@manovee/iconmoji.svg?style=flat&color=brightgreen)](https://www.npmjs.com/package/@manovee/iconmoji)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/manovee/iconmoji/actions/workflows/ci.yml/badge.svg)](https://github.com/manovee/iconmoji/actions/workflows/ci.yml)
+[![Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-orange)](https://manovee.github.io/iconmoji/)
+
+A lightweight, modern icon picker for React and Next.js apps. It ships with:
 
 - A built-in `IconPicker` trigger + popover
 - An `IconPickerPanel` you can mount inside shadcn/ui `Popover`, `Dialog`, or any custom surface
-- Full Lucide icon support via `lucide-react`
+- Full Lucide icon support via `lucide-react` with category grouping
 - Emoji categories with a denser 7-column grid by default
-- Better Lucide search through tokenized names and synonym expansion
+- Smart Lucide search through tokenized names and synonym expansion
 - Optional controlled open state for the trigger + popover wrapper
 - Optional icon subsets and search disabling for tighter integrations
-
-The package does not depend on MUI, shadcn/ui, Tailwind, or Radix. Runtime peers are only `react` and `lucide-react`.
+- Zero extra runtime dependencies: only peers are `react` and `lucide-react`
 
 ## Install
 
-Once you publish the package, install it together with its peer dependencies:
+Install `@manovee/iconmoji` alongside its peer dependencies:
 
 ```bash
+# pnpm
+pnpm add @manovee/iconmoji react lucide-react
+
+# npm
 npm install @manovee/iconmoji react lucide-react
+
+# yarn
+yarn add @manovee/iconmoji react lucide-react
+
+# bun
+bun add @manovee/iconmoji react lucide-react
 ```
 
 For local development in this repo:
@@ -32,10 +46,12 @@ npm run build
 A small preview page lives in `preview/` and renders the built package straight from `dist/`.
 
 ```bash
+npm run dev
+# or for a one-off build + server:
 npm run preview
 ```
 
-Then open `http://127.0.0.1:4173/preview/`.
+Then open `http://127.0.0.1:4173/preview/` (or `http://localhost:4173`).
 
 Notes:
 
@@ -172,13 +188,16 @@ Props:
 - `iconNames?`: restricts the Lucide tab to a specific icon subset
 - `panelHeight?`: defaults to `360`
 - `emojiColumns?`: defaults to `7`
+- `labels?`: `{ triggerAriaLabel?, lucideTab?, emojiTab?, searchLucide?, searchEmoji?, noResults? }`
+- `categoriesUrl?`: CDN endpoint for dynamic Lucide categories or `false` (defaults to `"https://lucide.dev/api/categories"`)
+- `emojiDataUrl?`: CDN endpoint for dynamic Emojibase data or `false`
 - `buttonClassName?`
 - `panelClassName?`
 - `closeOnSelect?`: defaults to `true`
 
 ### `IconPickerPanel`
 
-Same selection props as `IconPicker`, but without the built-in trigger/popover wrapper.
+Same selection and data props as `IconPicker` (`value`, `onChange`, `tabs`, `searchable`, `categoriesUrl`, `emojiDataUrl`, `labels`, etc.), plus `initialTab?` (`"lucide" | "emoji"`), without the built-in trigger/popover wrapper.
 
 Additional notes:
 

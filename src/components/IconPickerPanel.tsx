@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useDeferredValue, useMemo, useState } from 'react';
+import React, { useEffect, useDeferredValue, useMemo, useState } from 'react';
 import { Search as SearchIcon, Smile, Sparkles, X } from 'lucide-react';
-import { filterEmojiCategories } from '../data/emojis';
-import { filterLucideIcons, getLucideIcon, humanizeIconName } from '../data/lucideSearch';
-import type { IconPickerLabels, IconPickerPanelProps, IconType } from '../types';
+import { EMOJI_CATEGORIES, fetchEmojiData, filterEmojiCategories } from '../data/emojis';
+import { BASE_LUCIDE_CATEGORIES, fetchLucideCategories, filterLucideCategories } from '../data/lucideCategories';
+import { getLucideIcon, humanizeIconName } from '../data/lucideSearch';
+import type { EmojiCategory, IconPickerLabels, IconPickerPanelProps, IconType, LucideCategory } from '../types';
 import { DEFAULT_LABELS } from '../types';
 import { cx } from '../utils/cx';
 
@@ -42,20 +43,63 @@ export function IconPickerPanel({
   className,
   id,
   labels,
-  style
+  style,
+  categoriesUrl,
+  emojiDataUrl
 }: IconPickerPanelProps) {
   const availableTabs = resolveTabs(tabs);
   const mergedLabels = mergeLabels(labels);
   const [activeTab, setActiveTab] = useState<IconType>(() => resolveInitialTab(value.type, availableTabs, initialTab));
+  const [lucideCategories, setLucideCategories] = useState<LucideCategory[]>(BASE_LUCIDE_CATEGORIES);
+  const [emojiCategories, setEmojiCategories] = useState<EmojiCategory[]>(EMOJI_CATEGORIES);
   const [lucideQuery, setLucideQuery] = useState('');
   const [emojiQuery, setEmojiQuery] = useState('');
   const deferredLucideQuery = useDeferredValue(lucideQuery);
   const deferredEmojiQuery = useDeferredValue(emojiQuery);
 
-  const filteredLucide = useMemo(() => filterLucideIcons(deferredLucideQuery, iconNames), [deferredLucideQuery, iconNames]);
-  const filteredEmojis = useMemo(() => filterEmojiCategories(deferredEmojiQuery), [deferredEmojiQuery]);
+  useEffect(() => {
+    let isMounted = true;
+    if (categoriesUrl !== false) {
+      fetchLucideCategories(typeof categoriesUrl === 'string' ? categoriesUrl : undefined)
+        .then((cats) => {
+          if (isMounted && cats && cats.length > 0) {
+            setLucideCategories(cats);
+          }
+        })
+        .catch(() => {});
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [categoriesUrl]);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (emojiDataUrl !== false) {
+      fetchEmojiData(typeof emojiDataUrl === 'string' ? emojiDataUrl : undefined)
+        .then((cats) => {
+          if (isMounted && cats && cats.length > 0) {
+            setEmojiCategories(cats);
+          }
+        })
+        .catch(() => {});
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [emojiDataUrl]);
+
+  const filteredLucide = useMemo(
+    () => filterLucideCategories(deferredLucideQuery, iconNames, lucideCategories),
+    [deferredLucideQuery, iconNames, lucideCategories]
+  );
+  const filteredEmojis = useMemo(
+    () => filterEmojiCategories(deferredEmojiQuery, emojiCategories),
+    [deferredEmojiQuery, emojiCategories]
+  );
   const activeQuery = activeTab === 'emoji' ? emojiQuery : lucideQuery;
   const showTabs = availableTabs.length > 1;
+
 
   const panelStyle = {
     '--icon-picker-panel-height': `${panelHeight}px`,
@@ -137,25 +181,30 @@ export function IconPickerPanel({
           filteredLucide.length === 0 ? (
             <EmptyResults message={mergedLabels.noResults(activeQuery)} />
           ) : (
-            <div>
-              <div className="icon-picker__grid" aria-label={mergedLabels.lucideTab}>
-                {filteredLucide.map((name) => {
-                  const Icon = getLucideIcon(name);
-                  const isSelected = value.type === 'lucide' && value.value === name;
+            <div className="icon-picker__sections">
+              {filteredLucide.map((category) => (
+                <section key={category.label} className="icon-picker__section">
+                  <div className="icon-picker__section-title">{category.label}</div>
+                  <div className="icon-picker__grid" aria-label={category.label}>
+                    {category.icons.map((name) => {
+                      const Icon = getLucideIcon(name);
+                      const isSelected = value.type === 'lucide' && value.value === name;
 
-                  return (
-                    <button
-                      key={name}
-                      type="button"
-                      className={cx('icon-picker__item', isSelected && 'is-selected')}
-                      aria-pressed={isSelected}
-                      title={humanizeIconName(name)}
-                      onClick={() => onChange({ type: 'lucide', value: name })}>
-                      <Icon size={20} />
-                    </button>
-                  );
-                })}
-              </div>
+                      return (
+                        <button
+                          key={name}
+                          type="button"
+                          className={cx('icon-picker__item', isSelected && 'is-selected')}
+                          aria-pressed={isSelected}
+                          title={humanizeIconName(name)}
+                          onClick={() => onChange({ type: 'lucide', value: name })}>
+                          <Icon size={20} />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
             </div>
           )
         ) : filteredEmojis.length === 0 ? (

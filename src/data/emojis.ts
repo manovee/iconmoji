@@ -869,15 +869,118 @@ const emojiLabelIndex = new Map(
   EMOJI_CATEGORIES.flatMap((category) => category.emojis.map((item) => [item.emoji, item.label] as const))
 );
 
+export const EMOJI_DATA_CDN_URL = 'https://cdn.jsdelivr.net/npm/emojibase-data@latest/en/compact.json';
+
+const EMOJIBASE_GROUPS = [
+  { label: 'Smileys & Emotion', keywords: ['smileys', 'faces', 'emotion'] },
+  { label: 'People & Body', keywords: ['people', 'body', 'hands', 'gestures'] },
+  null, // 2 = component
+  { label: 'Animals & Nature', keywords: ['animals', 'nature', 'plants'] },
+  { label: 'Food & Drink', keywords: ['food', 'drink', 'beverage'] },
+  { label: 'Travel & Places', keywords: ['travel', 'places', 'buildings', 'transport'] },
+  { label: 'Activities', keywords: ['activities', 'sports', 'games'] },
+  { label: 'Objects', keywords: ['objects', 'tools', 'music'] },
+  { label: 'Symbols', keywords: ['symbols', 'signs', 'shapes'] },
+  { label: 'Flags', keywords: ['flags', 'countries'] }
+];
+
+let cdnEmojiCache: EmojiCategory[] | null = null;
+let cdnEmojiFetchPromise: Promise<EmojiCategory[]> | null = null;
+
+export function parseEmojiData(data: unknown): EmojiCategory[] | null {
+  if (!Array.isArray(data) || data.length === 0) return null;
+
+  const first = data[0] as Record<string, unknown>;
+
+  // Format 3: already EmojiCategory[]
+  if (first?.label && Array.isArray(first?.emojis)) {
+    return data as EmojiCategory[];
+  }
+
+  // Format 2: unicode-emoji-json array
+  if (first?.name && Array.isArray(first?.emojis)) {
+    return (data as Array<{ name: string; emojis: Array<{ emoji: string; name?: string }> }>).map((g) => ({
+      label: g.name,
+      keywords: [g.name.toLowerCase()],
+      emojis: g.emojis.map((e) => ({
+        emoji: e.emoji,
+        label: e.name || '',
+        keywords: (e.name || '').toLowerCase().split(/\s+/)
+      }))
+    })).filter((g) => g.emojis.length > 0);
+  }
+
+  // Format 1: Emojibase compact array
+  const map = new Map<string, EmojiCategory>();
+  for (const g of EMOJIBASE_GROUPS) {
+    if (g) map.set(g.label, { label: g.label, keywords: g.keywords, emojis: [] });
+  }
+
+  for (const item of data as Array<{ group?: number; unicode?: string; label?: string; tags?: string[] }>) {
+    if (typeof item.group !== 'number') continue;
+    const groupDef = EMOJIBASE_GROUPS[item.group];
+    if (!groupDef) continue;
+    const cat = map.get(groupDef.label);
+    if (cat && item.unicode) {
+      cat.emojis.push({
+        emoji: item.unicode,
+        label: item.label || '',
+        keywords: Array.isArray(item.tags) ? item.tags : []
+      });
+      if (!emojiLabelIndex.has(item.unicode)) {
+        emojiLabelIndex.set(item.unicode, item.label || '');
+      }
+    }
+  }
+
+  const result = Array.from(map.values()).filter((c) => c.emojis.length > 0);
+  return result.length > 0 ? result : null;
+}
+
+export async function fetchEmojiData(url: string = EMOJI_DATA_CDN_URL): Promise<EmojiCategory[]> {
+  if (cdnEmojiCache) {
+    return cdnEmojiCache;
+  }
+  if (cdnEmojiFetchPromise) {
+    return cdnEmojiFetchPromise;
+  }
+
+  cdnEmojiFetchPromise = (async () => {
+    try {
+      if (typeof fetch === 'undefined') {
+        return EMOJI_CATEGORIES;
+      }
+      const response = await fetch(url);
+      if (!response.ok) {
+        return EMOJI_CATEGORIES;
+      }
+      const json = await response.json();
+      const parsed = parseEmojiData(json);
+      if (parsed && parsed.length > 0) {
+        cdnEmojiCache = parsed;
+        return parsed;
+      }
+    } catch {
+      // Fallback silently to built-in EMOJI_CATEGORIES on error
+    }
+    return EMOJI_CATEGORIES;
+  })();
+
+  return cdnEmojiFetchPromise;
+}
+
 export function getEmojiLabel(emoji: string): string | undefined {
   return emojiLabelIndex.get(emoji);
 }
 
-export function filterEmojiCategories(query: string): EmojiCategory[] {
+export function filterEmojiCategories(
+  query: string,
+  categories: EmojiCategory[] = EMOJI_CATEGORIES
+): EmojiCategory[] {
   const normalizedQuery = normalizeSearch(query);
-  if (!normalizedQuery) return EMOJI_CATEGORIES;
+  if (!normalizedQuery) return categories;
 
-  return EMOJI_CATEGORIES.map((category) => {
+  return categories.map((category) => {
     const categoryHaystack = normalizeSearch(`${category.label} ${category.keywords.join(' ')}`);
     if (matchesAllTokens(categoryHaystack, normalizedQuery)) {
       return category;
@@ -892,3 +995,4 @@ export function filterEmojiCategories(query: string): EmojiCategory[] {
     };
   }).filter((category) => category.emojis.length > 0);
 }
+

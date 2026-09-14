@@ -78,7 +78,6 @@ pre {
 }
 
 .preview-topbar,
-.preview-hero,
 .preview-doc-card,
 .preview-props {
   backdrop-filter: blur(20px);
@@ -124,9 +123,7 @@ pre {
 }
 
 .preview-brand__copy span,
-.preview-intro,
 .preview-toggle,
-.preview-summary-pill span,
 .preview-doc-list p {
   color: var(--page-muted);
 }
@@ -232,16 +229,6 @@ pre {
   inline-size: 16px;
 }
 
-.preview-hero {
-  align-items: end;
-  border-radius: 30px;
-  display: grid;
-  gap: 20px;
-  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.95fr);
-  margin-bottom: 18px;
-  padding: 26px 28px;
-}
-
 .preview-eyebrow {
   color: var(--page-accent);
   font-size: 0.78rem;
@@ -251,7 +238,6 @@ pre {
   text-transform: uppercase;
 }
 
-.preview-hero__copy h1,
 .preview-stage__header h2,
 .preview-doc-card__header h3 {
   font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
@@ -261,54 +247,12 @@ pre {
   margin: 0;
 }
 
-.preview-hero__copy h1 {
-  font-size: clamp(1.5rem, 3vw, 2.52rem);
-  max-width: 11ch;
-}
-
-.preview-hero__title-row {
-  align-items: start;
-  display: flex;
-  gap: 16px;
-  justify-content: space-between;
-}
-
-.preview-intro {
-  font-size: 1rem;
-  line-height: 1.55;
-  margin: 14px 0 0;
-}
-
-.preview-summary {
-  display: grid;
-  gap: 12px;
-}
-
-.preview-summary-pill {
-  background: var(--page-card-strong);
-  border: 1px solid var(--page-line);
-  border-radius: 18px;
-  display: grid;
-  gap: 4px;
-  padding: 14px 16px;
-}
-
-.preview-summary-pill span {
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.preview-summary-pill strong {
-  font-size: 1rem;
-}
-
 .preview-showcase {
   border-radius: 30px;
   display: grid;
   gap: 18px;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  margin-top: 18px;
+  margin-top: 0;
   overflow: visible;
 }
 
@@ -426,7 +370,8 @@ pre {
   padding: 10px 14px;
 }
 
-.preview-app .icon-picker {
+.preview-app .icon-picker,
+.preview-app .icon-picker__panel {
   --icon-picker-bg: var(--preview-icon-picker-bg);
   --icon-picker-panel-bg: var(--preview-icon-picker-panel-bg);
   --icon-picker-border: var(--preview-icon-picker-border);
@@ -482,21 +427,6 @@ pre {
 
 .preview-doc-card__header h3 {
   font-size: clamp(0.96rem, 1.2vw, 1.2rem);
-}
-
-.preview-v0-button {
-  align-items: center;
-  border-radius: 999px;
-  display: inline-flex;
-  flex: 0 0 auto;
-  font-family: "Avenir Next", "Segoe UI", sans-serif;
-  font-size: 0.98rem;
-  gap: 8px;
-  letter-spacing: 0;
-  line-height: 1;
-  min-height: 42px;
-  padding: 10px 14px;
-  white-space: nowrap;
 }
 
 .preview-inline-command {
@@ -560,8 +490,7 @@ pre {
 }
 
 @media (max-width: 1100px) {
-  .preview-showcase,
-  .preview-hero {
+  .preview-showcase {
     grid-template-columns: 1fr;
   }
 
@@ -590,11 +519,6 @@ pre {
     flex-direction: column;
   }
 
-  .preview-hero__title-row {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
   .preview-toggle {
     justify-content: center;
     width: 100%;
@@ -611,7 +535,6 @@ pre {
     min-width: 0;
   }
 
-  .preview-hero,
   .preview-showcase,
   .preview-doc-card,
   .preview-props {

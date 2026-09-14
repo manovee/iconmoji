@@ -1,5 +1,12 @@
 .icon-picker,
 .icon-picker__panel {
+  --icon-picker-radius: 16px;
+  --icon-picker-width: 352px;
+  box-sizing: border-box;
+}
+
+.icon-picker,
+.icon-picker__panel:not(.icon-picker *) {
   --icon-picker-bg: var(--background, #ffffff);
   --icon-picker-panel-bg: var(--popover, #ffffff);
   --icon-picker-border: var(--border, rgba(15, 23, 42, 0.12));
@@ -8,14 +15,12 @@
   --icon-picker-hover: var(--accent, rgba(15, 23, 42, 0.06));
   --icon-picker-selected: var(--accent, rgba(14, 165, 233, 0.16));
   --icon-picker-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
-  --icon-picker-radius: 16px;
-  --icon-picker-width: 352px;
   color: var(--icon-picker-text);
 }
 
 @media (prefers-color-scheme: dark) {
   .icon-picker,
-  .icon-picker__panel {
+  .icon-picker__panel:not(.icon-picker *) {
     --icon-picker-bg: #151515;
     --icon-picker-panel-bg: #1d1d1d;
     --icon-picker-border: #303030;
@@ -39,6 +44,22 @@
   --icon-picker-hover: #242424;
   --icon-picker-selected: #202020;
   --icon-picker-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.light .icon-picker,
+.light .icon-picker__panel,
+[data-theme='light'] .icon-picker,
+[data-theme='light'] .icon-picker__panel,
+[style*="color-scheme: light"] .icon-picker,
+[style*="color-scheme: light"] .icon-picker__panel {
+  --icon-picker-bg: var(--background, #ffffff);
+  --icon-picker-panel-bg: var(--popover, #ffffff);
+  --icon-picker-border: var(--border, rgba(15, 23, 42, 0.12));
+  --icon-picker-text: var(--foreground, #0f172a);
+  --icon-picker-muted: var(--muted-foreground, #64748b);
+  --icon-picker-hover: var(--accent, rgba(15, 23, 42, 0.06));
+  --icon-picker-selected: var(--accent, rgba(14, 165, 233, 0.16));
+  --icon-picker-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
 }
 
 .icon-picker {
@@ -86,8 +107,7 @@
 
 .icon-picker__trigger:focus-visible,
 .icon-picker__tab:focus-visible,
-.icon-picker__item:focus-visible,
-.icon-picker__search-input:focus-visible {
+.icon-picker__item:focus-visible {
   outline: 2px solid rgba(14, 165, 233, 0.5);
   outline-offset: 2px;
 }
@@ -188,13 +208,22 @@
 }
 
 .icon-picker__search-input {
+  appearance: none;
   background: transparent;
   border: 0;
+  box-shadow: none;
   color: inherit;
   flex: 1 1 auto;
   font: inherit;
   font-size: 0.8125rem;
   min-width: 0;
+  outline: none;
+}
+
+.icon-picker__search-input:focus,
+.icon-picker__search-input:focus-visible {
+  border: 0;
+  box-shadow: none;
   outline: none;
 }
 
@@ -249,6 +278,7 @@
   transform: scale(1.15);
 }
 
+.icon-picker__sections,
 .icon-picker__emoji-sections {
   display: flex;
   flex-direction: column;
@@ -259,7 +289,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 150px;
 }
+
 
 .icon-picker__section-title {
   color: var(--icon-picker-muted);

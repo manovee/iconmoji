@@ -37,6 +37,11 @@ export const DEFAULT_LABELS: IconPickerLabels = {
   noResults: (query) => `No icons found for "${query}"`
 };
 
+export interface LucideCategory {
+  label: string;
+  icons: string[];
+}
+
 export interface IconPickerPanelProps {
   value: IconPickerValue;
   onChange: (value: IconPickerValue) => void;
@@ -50,6 +55,8 @@ export interface IconPickerPanelProps {
   id?: string;
   labels?: Partial<IconPickerLabels>;
   style?: CSSProperties;
+  categoriesUrl?: string | false;
+  emojiDataUrl?: string | false;
 }
 
 export interface IconPickerProps extends Omit<IconPickerPanelProps, 'id' | 'className'> {
@@ -62,3 +69,4 @@ export interface IconPickerProps extends Omit<IconPickerPanelProps, 'id' | 'clas
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
+

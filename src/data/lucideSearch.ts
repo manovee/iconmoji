@@ -137,8 +137,7 @@ export function filterLucideIcons(query: string, iconNames?: string[]): LucideIc
   const availableIcons = resolveLucideIconNames(iconNames);
   const normalizedQuery = normalizeSearch(query);
   if (!normalizedQuery) {
-    if (iconNames?.length) return availableIcons;
-    return DEFAULT_CURATED_ICONS;
+    return availableIcons;
   }
 
   return availableIcons.filter((name) => matchesAllTokens(LUCIDE_SEARCH_INDEX.get(name) ?? '', normalizedQuery));

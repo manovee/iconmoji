@@ -1,7 +1,7 @@
 import React, { startTransition, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import htm from "https://esm.sh/htm@3.1.1";
-import { Copy as CopyIcon, ExternalLink, Eye, Code2, Sun, Moon } from "lucide-react";
+import { Copy as CopyIcon, Eye, Code2, Sun, Moon } from "lucide-react";
 import {
   IconPicker,
   IconPickerPanel,
@@ -143,16 +143,6 @@ export function PanelExample() {
   );
 }`;
 
-const V0_PROMPT = `Build a polished React example page for @manovee/iconmoji.
-Include:
-- a default IconPicker example
-- a panel-only IconPickerPanel example
-- labels.lucideTab renamed to "Icons"
-- support for light and dark themes
-- installation commands for pnpm, npm, yarn, and bun
-- a props table at the bottom
-Use @manovee/iconmoji/styles.css in the example.`;
-
 const PROPS = [
   ["value", "{ type: 'lucide' | 'emoji'; value: string }", "-", "Current selected value."],
   ["onChange", "(value) => void", "-", "Called when a new icon or emoji is selected."],
@@ -166,6 +156,8 @@ const PROPS = [
   ["emojiColumns", "number", "7", "Number of emoji columns."],
   ["labels", "Partial<IconPickerLabels>", "-", "Override UI labels like Icons and search placeholders."],
   ["closeOnSelect", "boolean", "true", "Close the built-in popover after selection."],
+  ["categoriesUrl", "string | false", "https://lucide.dev/api/categories", "Custom CDN endpoint for dynamic Lucide categories, or false to disable."],
+  ["emojiDataUrl", "string | false", "https://cdn.jsdelivr.net/npm/emojibase-data...", "Custom CDN endpoint for dynamic emoji dataset (Emojibase), or false to disable."],
   ["buttonClassName", "string", "-", "Custom class for the built-in trigger button."],
   ["panelClassName", "string", "-", "Custom class for the rendered panel wrapper."]
 ];
@@ -323,15 +315,6 @@ function PropsTable() {
   `;
 }
 
-function SummaryPill({ label, value }) {
-  return html`
-    <div className="preview-summary-pill">
-      <span>${label}</span>
-      <strong>${value}</strong>
-    </div>
-  `;
-}
-
 function App() {
   const [theme, setTheme] = useState(getInitialTheme);
   const [closeOnSelect, setCloseOnSelect] = useState(true);
@@ -369,12 +352,8 @@ function App() {
     startTransition(() => setPanelValue(nextValue));
   };
 
-  const openV0ButtonPage = () => {
-    globalThis.open("https://v0.app/chat/button", "_blank", "noopener,noreferrer");
-  };
-
   return html`
-    <div className="preview-app" style=${pageStyle}>
+    <div className="preview-app" data-theme=${theme} style=${pageStyle}>
       <div className="preview-backdrop"></div>
       <main className="preview-layout">
         <header className="preview-topbar">
@@ -406,26 +385,6 @@ function App() {
             </div>
           </div>
         </header>
-
-        <section className="preview-hero">
-          <div className="preview-hero__copy">
-            <p className="preview-eyebrow">Standalone preview</p>
-          <div className="preview-hero__title-row">
-            <h1>Pick icons or emoji</h1>
-            <button type="button" className="preview-ghost-button preview-v0-button" onClick=${openV0ButtonPage}>
-              <span>Open in v0</span>
-              <${ExternalLink} size=${15} />
-            </button>
-          </div>
-            <p className="preview-intro">Preview the package, inspect the code, copy commands, and scan the props.</p>
-          </div>
-
-          <div className="preview-summary">
-            <${SummaryPill} label="Trigger" value=${describeSelection(pickerValue)} />
-            <${SummaryPill} label="Panel" value=${describeSelection(panelValue)} />
-            <${SummaryPill} label="Theme" value=${theme === "light" ? "Light mode" : "Dark mode"} />
-          </div>
-        </section>
 
         <section className="preview-showcase">
           <${StageShell}
