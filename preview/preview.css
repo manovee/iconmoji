@@ -759,15 +759,29 @@ pre {
 
 .preview-step-number {
   align-items: center;
-  background: var(--page-text);
+  background: #09090b;
   border-radius: 6px;
-  color: var(--page-background);
+  color: #ffffff;
   display: inline-flex;
+  font-family: inherit;
   font-size: 0.82rem;
   font-weight: 700;
   height: 24px;
   justify-content: center;
+  line-height: 1;
   width: 24px;
+}
+
+[data-theme="dark"] .preview-step-number,
+.preview-app[data-theme="dark"] .preview-step-number {
+  background: #ffffff;
+  color: #09090b;
+}
+
+[data-theme="light"] .preview-step-number,
+.preview-app[data-theme="light"] .preview-step-number {
+  background: #09090b;
+  color: #ffffff;
 }
 
 .preview-step-card h4 {
