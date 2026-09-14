@@ -28,72 +28,72 @@ const THEME_STORAGE_KEY = "iconmoji-preview-theme";
 
 const THEMES = {
   light: {
-    "--page-background": "linear-gradient(180deg, #f7f1ea 0%, #fffbf5 100%)",
-    "--page-text": "#11192d",
-    "--page-muted": "#62708a",
-    "--page-card": "rgba(255, 255, 255, 0.66)",
-    "--page-card-strong": "rgba(255, 255, 255, 0.82)",
-    "--page-line": "rgba(15, 23, 42, 0.08)",
-    "--page-shadow": "0 28px 80px rgba(15, 23, 42, 0.08)",
-    "--page-accent": "#c75b12",
-    "--page-glow-1": "rgba(251, 146, 60, 0.18)",
-    "--page-glow-2": "rgba(59, 130, 246, 0.12)",
-    "--page-chip-bg": "rgba(255, 255, 255, 0.72)",
-    "--page-chip-text": "#42506c",
-    "--icon-picker-bg": "rgba(255, 255, 255, 0.88)",
-    "--icon-picker-panel-bg": "rgba(255, 252, 247, 0.98)",
-    "--icon-picker-border": "rgba(15, 23, 42, 0.1)",
-    "--icon-picker-text": "#1f2937",
-    "--icon-picker-muted": "#64748b",
-    "--icon-picker-hover": "rgba(251, 146, 60, 0.12)",
-    "--icon-picker-selected": "rgba(249, 115, 22, 0.18)",
-    "--icon-picker-shadow": "0 28px 70px rgba(15, 23, 42, 0.18)",
-    "--preview-icon-picker-bg": "rgba(255, 255, 255, 0.88)",
-    "--preview-icon-picker-panel-bg": "rgba(255, 252, 247, 0.98)",
-    "--preview-icon-picker-border": "rgba(15, 23, 42, 0.1)",
-    "--preview-icon-picker-text": "#1f2937",
-    "--preview-icon-picker-muted": "#64748b",
-    "--preview-icon-picker-hover": "rgba(251, 146, 60, 0.12)",
-    "--preview-icon-picker-selected": "rgba(249, 115, 22, 0.18)",
-    "--preview-icon-picker-shadow": "0 28px 70px rgba(15, 23, 42, 0.18)",
+    "--page-background": "linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%)",
+    "--page-text": "#09090b",
+    "--page-muted": "#71717a",
+    "--page-card": "rgba(255, 255, 255, 0.75)",
+    "--page-card-strong": "rgba(255, 255, 255, 0.95)",
+    "--page-line": "rgba(0, 0, 0, 0.08)",
+    "--page-shadow": "0 20px 60px rgba(0, 0, 0, 0.06)",
+    "--page-accent": "#09090b",
+    "--page-glow-1": "rgba(0, 0, 0, 0.03)",
+    "--page-glow-2": "rgba(0, 0, 0, 0.02)",
+    "--page-chip-bg": "rgba(0, 0, 0, 0.05)",
+    "--page-chip-text": "#27272a",
+    "--icon-picker-bg": "#ffffff",
+    "--icon-picker-panel-bg": "#ffffff",
+    "--icon-picker-border": "rgba(0, 0, 0, 0.12)",
+    "--icon-picker-text": "#09090b",
+    "--icon-picker-muted": "#71717a",
+    "--icon-picker-hover": "rgba(0, 0, 0, 0.05)",
+    "--icon-picker-selected": "rgba(0, 0, 0, 0.08)",
+    "--icon-picker-shadow": "0 20px 60px rgba(0, 0, 0, 0.12)",
+    "--preview-icon-picker-bg": "#ffffff",
+    "--preview-icon-picker-panel-bg": "#ffffff",
+    "--preview-icon-picker-border": "rgba(0, 0, 0, 0.12)",
+    "--preview-icon-picker-text": "#09090b",
+    "--preview-icon-picker-muted": "#71717a",
+    "--preview-icon-picker-hover": "rgba(0, 0, 0, 0.05)",
+    "--preview-icon-picker-selected": "rgba(0, 0, 0, 0.08)",
+    "--preview-icon-picker-shadow": "0 20px 60px rgba(0, 0, 0, 0.12)",
     "--icon-picker-width": "100%",
-    "--preview-surface": "linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(251, 241, 228, 0.9))",
-    "--preview-orb": "rgba(251, 146, 60, 0.16)",
-    "--preview-code-bg": "rgba(250, 247, 242, 0.92)"
+    "--preview-surface": "linear-gradient(180deg, #ffffff 0%, #f4f4f5 100%)",
+    "--preview-orb": "rgba(0, 0, 0, 0.03)",
+    "--preview-code-bg": "#f4f4f5"
   },
   dark: {
-    "--page-background": "linear-gradient(180deg, #09111f 0%, #0e1728 100%)",
-    "--page-text": "#edf2ff",
-    "--page-muted": "#9aa9c4",
-    "--page-card": "rgba(8, 15, 29, 0.68)",
-    "--page-card-strong": "rgba(12, 21, 38, 0.82)",
-    "--page-line": "rgba(148, 163, 184, 0.16)",
-    "--page-shadow": "0 34px 90px rgba(2, 6, 23, 0.42)",
-    "--page-accent": "#8cc8ff",
-    "--page-glow-1": "rgba(56, 189, 248, 0.18)",
-    "--page-glow-2": "rgba(129, 140, 248, 0.14)",
-    "--page-chip-bg": "rgba(255, 255, 255, 0.08)",
-    "--page-chip-text": "#d7e3fa",
-    "--icon-picker-bg": "rgba(15, 23, 42, 0.78)",
-    "--icon-picker-panel-bg": "rgba(15, 23, 42, 0.96)",
-    "--icon-picker-border": "rgba(148, 163, 184, 0.18)",
-    "--icon-picker-text": "#e2e8f0",
-    "--icon-picker-muted": "#94a3b8",
-    "--icon-picker-hover": "rgba(56, 189, 248, 0.14)",
-    "--icon-picker-selected": "rgba(14, 165, 233, 0.2)",
-    "--icon-picker-shadow": "0 30px 80px rgba(2, 6, 23, 0.45)",
-    "--preview-icon-picker-bg": "rgba(15, 23, 42, 0.78)",
-    "--preview-icon-picker-panel-bg": "rgba(15, 23, 42, 0.96)",
-    "--preview-icon-picker-border": "rgba(148, 163, 184, 0.18)",
-    "--preview-icon-picker-text": "#e2e8f0",
-    "--preview-icon-picker-muted": "#94a3b8",
-    "--preview-icon-picker-hover": "rgba(56, 189, 248, 0.14)",
-    "--preview-icon-picker-selected": "rgba(14, 165, 233, 0.2)",
-    "--preview-icon-picker-shadow": "0 30px 80px rgba(2, 6, 23, 0.45)",
+    "--page-background": "linear-gradient(180deg, #09090b 0%, #030303 100%)",
+    "--page-text": "#f4f4f5",
+    "--page-muted": "#a1a1aa",
+    "--page-card": "rgba(24, 24, 27, 0.65)",
+    "--page-card-strong": "rgba(24, 24, 27, 0.88)",
+    "--page-line": "rgba(255, 255, 255, 0.1)",
+    "--page-shadow": "0 24px 80px rgba(0, 0, 0, 0.6)",
+    "--page-accent": "#ffffff",
+    "--page-glow-1": "rgba(255, 255, 255, 0.04)",
+    "--page-glow-2": "rgba(255, 255, 255, 0.02)",
+    "--page-chip-bg": "rgba(255, 255, 255, 0.06)",
+    "--page-chip-text": "#e4e4e7",
+    "--icon-picker-bg": "#121214",
+    "--icon-picker-panel-bg": "#121214",
+    "--icon-picker-border": "rgba(255, 255, 255, 0.12)",
+    "--icon-picker-text": "#f4f4f5",
+    "--icon-picker-muted": "#a1a1aa",
+    "--icon-picker-hover": "rgba(255, 255, 255, 0.08)",
+    "--icon-picker-selected": "rgba(255, 255, 255, 0.14)",
+    "--icon-picker-shadow": "0 24px 80px rgba(0, 0, 0, 0.6)",
+    "--preview-icon-picker-bg": "#121214",
+    "--preview-icon-picker-panel-bg": "#121214",
+    "--preview-icon-picker-border": "rgba(255, 255, 255, 0.12)",
+    "--preview-icon-picker-text": "#f4f4f5",
+    "--preview-icon-picker-muted": "#a1a1aa",
+    "--preview-icon-picker-hover": "rgba(255, 255, 255, 0.08)",
+    "--preview-icon-picker-selected": "rgba(255, 255, 255, 0.14)",
+    "--preview-icon-picker-shadow": "0 24px 80px rgba(0, 0, 0, 0.6)",
     "--icon-picker-width": "100%",
-    "--preview-surface": "linear-gradient(180deg, rgba(17, 24, 39, 0.98), rgba(8, 15, 30, 0.96))",
-    "--preview-orb": "rgba(56, 189, 248, 0.18)",
-    "--preview-code-bg": "rgba(7, 12, 22, 0.92)"
+    "--preview-surface": "linear-gradient(180deg, #18181b 0%, #09090b 100%)",
+    "--preview-orb": "rgba(255, 255, 255, 0.03)",
+    "--preview-code-bg": "#121214"
   }
 };
 
@@ -187,6 +187,7 @@ function HeroSection() {
           <${Github} size=${16} /> Star on GitHub
         </a>
         <button type="button" className="preview-command-pill" onClick=${onCopy} title="Click to copy install command">
+          <span className="preview-command-prefix">$</span>
           <code>${copyCommand}</code>
           ${copied ? html`<${Check} size=${14} />` : html`<${CopyIcon} size=${14} />`}
         </button>
@@ -267,7 +268,7 @@ function QuickStartSection() {
             <h4>Render picker</h4>
             <p>Pass state and handler, that's all!</p>
             <div className="preview-inline-command preview-inline-command--compact">
-              <code>&lt;IconPicker value={value} onChange={setValue} /&gt;</code>
+              <code>${'<IconPicker value={value} onChange={setValue} />'}</code>
               <${CopyButton} text='<IconPicker value={value} onChange={setValue} />' label="Copy code" />
             </div>
           </div>
@@ -377,7 +378,7 @@ function CopyButton({ text, label, copiedLabel = "Copied" }) {
   `;
 }
 
-function StageShell({ title, eyebrow, mode, setMode, code, children }) {
+function StageShell({ title, eyebrow, mode, setMode, code, extraControl, children }) {
   return html`
     <article className="preview-stage">
       <div className="preview-stage__header">
@@ -387,6 +388,7 @@ function StageShell({ title, eyebrow, mode, setMode, code, children }) {
         </div>
 
         <div className="preview-stage__controls">
+          ${extraControl}
           <${CopyButton} text=${code} label="Copy code" copiedLabel="Copied" />
           <div className="preview-mini-tabs preview-mini-tabs--icon" role="tablist" aria-label="${title} mode">
             <button
@@ -516,7 +518,6 @@ function App() {
             <span className="preview-brand__mark"></span>
             <div className="preview-brand__copy">
               <strong>iconmoji</strong>
-              <span className="preview-badge-pill">v0.1.0</span>
             </div>
           </div>
 
@@ -540,15 +541,6 @@ function App() {
               <${Box} size=${15} />
               <span>npm</span>
             </a>
-
-            <label className="preview-toggle">
-              <input
-                type="checkbox"
-                checked=${closeOnSelect}
-                onChange=${(event) => setCloseOnSelect(event.target.checked)}
-              />
-              <span>Close after pick</span>
-            </label>
 
             <div className="preview-segmented preview-segmented--icon" role="tablist" aria-label="Preview theme">
               <button type="button" className=${theme === "light" ? "is-active" : ""} onClick=${() => applyTheme("light")} aria-label="Light mode" title="Light mode">
@@ -581,6 +573,16 @@ function App() {
             mode=${builtInMode}
             setMode=${setBuiltInMode}
             code=${BUILTIN_CODE}
+            extraControl=${html`
+              <label className="preview-toggle">
+                <input
+                  type="checkbox"
+                  checked=${closeOnSelect}
+                  onChange=${(event) => setCloseOnSelect(event.target.checked)}
+                />
+                <span>Close after pick</span>
+              </label>
+            `}
             >
             <div className="preview-canvas preview-canvas--flat">
               <div className="preview-canvas__orb"></div>

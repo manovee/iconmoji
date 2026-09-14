@@ -37,7 +37,7 @@
                 : "light";
           document.documentElement.setAttribute("data-theme", theme);
           document.documentElement.style.colorScheme = theme;
-          var themeBg = theme === "dark" ? "#09111f" : "#f7f1ea";
+          var themeBg = theme === "dark" ? "#09090b" : "#fafafa";
           document.documentElement.style.backgroundColor = themeBg;
           var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute("content", themeBg);

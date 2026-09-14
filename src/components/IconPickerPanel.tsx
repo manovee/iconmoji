@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useDeferredValue, useMemo, useState } from 'react';
+import React, { useEffect, useDeferredValue, useMemo, useRef, useState } from 'react';
 import { Search as SearchIcon, Smile, Sparkles, X } from 'lucide-react';
 import { EMOJI_CATEGORIES, fetchEmojiData, filterEmojiCategories } from '../data/emojis';
 import { BASE_LUCIDE_CATEGORIES, fetchLucideCategories, filterLucideCategories } from '../data/lucideCategories';
@@ -52,10 +52,9 @@ export function IconPickerPanel({
   const [activeTab, setActiveTab] = useState<IconType>(() => resolveInitialTab(value.type, availableTabs, initialTab));
   const [lucideCategories, setLucideCategories] = useState<LucideCategory[]>(BASE_LUCIDE_CATEGORIES);
   const [emojiCategories, setEmojiCategories] = useState<EmojiCategory[]>(EMOJI_CATEGORIES);
-  const [lucideQuery, setLucideQuery] = useState('');
-  const [emojiQuery, setEmojiQuery] = useState('');
-  const deferredLucideQuery = useDeferredValue(lucideQuery);
-  const deferredEmojiQuery = useDeferredValue(emojiQuery);
+  const [searchQuery, setSearchQuery] = useState('');
+  const deferredSearchQuery = useDeferredValue(searchQuery);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -90,16 +89,14 @@ export function IconPickerPanel({
   }, [emojiDataUrl]);
 
   const filteredLucide = useMemo(
-    () => filterLucideCategories(deferredLucideQuery, iconNames, lucideCategories),
-    [deferredLucideQuery, iconNames, lucideCategories]
+    () => filterLucideCategories(deferredSearchQuery, iconNames, lucideCategories),
+    [deferredSearchQuery, iconNames, lucideCategories]
   );
   const filteredEmojis = useMemo(
-    () => filterEmojiCategories(deferredEmojiQuery, emojiCategories),
-    [deferredEmojiQuery, emojiCategories]
+    () => filterEmojiCategories(deferredSearchQuery, emojiCategories),
+    [deferredSearchQuery, emojiCategories]
   );
-  const activeQuery = activeTab === 'emoji' ? emojiQuery : lucideQuery;
   const showTabs = availableTabs.length > 1;
-
 
   const panelStyle = {
     '--icon-picker-panel-height': `${panelHeight}px`,
@@ -119,8 +116,6 @@ export function IconPickerPanel({
               aria-selected={activeTab === 'lucide'}
               onClick={() => {
                 setActiveTab('lucide');
-                setLucideQuery('');
-                setEmojiQuery('');
               }}>
               <Sparkles size={15} />
               <span>{mergedLabels.lucideTab}</span>
@@ -134,8 +129,6 @@ export function IconPickerPanel({
               aria-selected={activeTab === 'emoji'}
               onClick={() => {
                 setActiveTab('emoji');
-                setLucideQuery('');
-                setEmojiQuery('');
               }}>
               <Smile size={15} />
               <span>{mergedLabels.emojiTab}</span>
@@ -148,27 +141,32 @@ export function IconPickerPanel({
         <div className="icon-picker__search">
           <SearchIcon size={15} className="icon-picker__search-icon" />
           <input
+            ref={searchInputRef}
             type="search"
-            value={activeTab === 'emoji' ? emojiQuery : lucideQuery}
-            onChange={(event) => {
-              if (activeTab === 'emoji') {
-                setEmojiQuery(event.target.value);
-              } else {
-                setLucideQuery(event.target.value);
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape' && searchQuery) {
+                event.stopPropagation();
+                setSearchQuery('');
               }
             }}
             placeholder={activeTab === 'emoji' ? mergedLabels.searchEmoji : mergedLabels.searchLucide}
             className="icon-picker__search-input"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
           />
-          {activeQuery ? (
+          {searchQuery ? (
             <button
               type="button"
+              className="icon-picker__search-clear"
               onClick={() => {
-                if (activeTab === 'emoji') setEmojiQuery('');
-                else setLucideQuery('');
+                setSearchQuery('');
+                searchInputRef.current?.focus();
               }}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'inherit', opacity: 0.6 }}
-              aria-label="Clear"
+              aria-label={mergedLabels.clearSearch || 'Clear search'}
             >
               <X size={14} />
             </button>
@@ -179,7 +177,7 @@ export function IconPickerPanel({
       <div className="icon-picker__body">
         {activeTab === 'lucide' ? (
           filteredLucide.length === 0 ? (
-            <EmptyResults message={mergedLabels.noResults(activeQuery)} />
+            <EmptyResults message={mergedLabels.noResults(searchQuery)} />
           ) : (
             <div className="icon-picker__sections">
               {filteredLucide.map((category) => (
@@ -208,7 +206,7 @@ export function IconPickerPanel({
             </div>
           )
         ) : filteredEmojis.length === 0 ? (
-          <EmptyResults message={mergedLabels.noResults(activeQuery)} />
+          <EmptyResults message={mergedLabels.noResults(searchQuery)} />
         ) : (
           <div className="icon-picker__emoji-sections">
             {filteredEmojis.map((category) => (

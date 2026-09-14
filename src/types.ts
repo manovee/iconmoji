@@ -25,6 +25,7 @@ export interface IconPickerLabels {
   emojiTab: string;
   searchLucide: string;
   searchEmoji: string;
+  clearSearch?: string;
   noResults: (query: string) => string;
 }
 
@@ -34,6 +35,7 @@ export const DEFAULT_LABELS: IconPickerLabels = {
   emojiTab: 'Emoji',
   searchLucide: 'Search icons...',
   searchEmoji: 'Search emoji...',
+  clearSearch: 'Clear search',
   noResults: (query) => `No icons found for "${query}"`
 };
 

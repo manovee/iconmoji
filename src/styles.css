@@ -79,7 +79,8 @@
 
 .icon-picker__trigger,
 .icon-picker__tab,
-.icon-picker__item {
+.icon-picker__item,
+.icon-picker__search-clear {
   appearance: none;
   background: none;
   border: 0;
@@ -107,7 +108,8 @@
 
 .icon-picker__trigger:focus-visible,
 .icon-picker__tab:focus-visible,
-.icon-picker__item:focus-visible {
+.icon-picker__item:focus-visible,
+.icon-picker__search-clear:focus-visible {
   outline: 2px solid rgba(14, 165, 233, 0.5);
   outline-offset: 2px;
 }
@@ -220,6 +222,21 @@
   outline: none;
 }
 
+.icon-picker__search-input::-webkit-search-cancel-button,
+.icon-picker__search-input::-webkit-search-decoration,
+.icon-picker__search-input::-webkit-search-results-button,
+.icon-picker__search-input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.icon-picker__search-input::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 .icon-picker__search-input:focus,
 .icon-picker__search-input:focus-visible {
   border: 0;
@@ -229,6 +246,22 @@
 
 .icon-picker__search-input::placeholder {
   color: var(--icon-picker-muted);
+}
+
+.icon-picker__search-clear {
+  align-items: center;
+  border-radius: 6px;
+  color: var(--icon-picker-muted);
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  padding: 3px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.icon-picker__search-clear:hover {
+  background: var(--icon-picker-hover);
+  color: var(--icon-picker-text);
 }
 
 .icon-picker__body {
