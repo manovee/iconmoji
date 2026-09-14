@@ -1,7 +1,21 @@
 import React, { startTransition, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import htm from "https://esm.sh/htm@3.1.1";
-import { Copy as CopyIcon, Eye, Code2, Sun, Moon } from "lucide-react";
+import {
+  Copy as CopyIcon,
+  Eye,
+  Code2,
+  Sun,
+  Moon,
+  Github,
+  Sparkles,
+  Check,
+  ArrowRight,
+  Box,
+  Zap,
+  Palette,
+  Smile
+} from "lucide-react";
 import {
   IconPicker,
   IconPickerPanel,
@@ -98,6 +112,170 @@ const INSTALL_COMMANDS = {
   yarn: "yarn add @manovee/iconmoji react lucide-react",
   bun: "bun add @manovee/iconmoji react lucide-react"
 };
+
+const FEATURES = [
+  {
+    icon: Zap,
+    title: "Zero Bloat (< 140 kB)",
+    description: "Only react and lucide-react as peers. No heavy UI framework or runtime dependencies."
+  },
+  {
+    icon: Sparkles,
+    title: "1,500+ Lucide Icons",
+    description: "Tokenized fuzzy search, category grouping, and synonym alias expansion for fast discovery."
+  },
+  {
+    icon: Smile,
+    title: "Full Emoji Catalog",
+    description: "Clean 7-column emoji grid organized by categories with instant mood and keyword matching."
+  },
+  {
+    icon: Palette,
+    title: "100% CSS Theming",
+    description: "Built with standard CSS variables. Naturally adopts your shadcn/ui, Tailwind, or custom dark theme."
+  },
+  {
+    icon: Box,
+    title: "Trigger or Headless Panel",
+    description: "Use the ready-made popover trigger, or mount the panel straight into shadcn Dialogs and Drawers."
+  },
+  {
+    icon: Code2,
+    title: "Next.js & RSC Ready",
+    description: 'Pre-configured with "use client" banner, TypeScript types, and dual ESM/CJS bundles.'
+  }
+];
+
+function HeroSection() {
+  const [copied, setCopied] = useState(false);
+  const copyCommand = "pnpm add @manovee/iconmoji react lucide-react";
+
+  const onCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(copyCommand);
+      setCopied(true);
+      globalThis.setTimeout(() => setCopied(false), 1500);
+    } catch {}
+  };
+
+  return html`
+    <header className="preview-hero">
+      <div className="preview-hero__badge">
+        <${Sparkles} size=${14} />
+        <span>v0.1.0 live on npm • Zero dependencies • 1,500+ Icons</span>
+      </div>
+
+      <h1 className="preview-hero__title">
+        The Icon & Emoji Picker<br />
+        <span className="preview-hero__title-gradient">React & Next.js Deserved</span>
+      </h1>
+
+      <p className="preview-hero__lead">
+        A fast, accessible, plug-and-play picker. Ships with 1,500+ Lucide icons, full Unicode emoji categories,
+        synonym search, and clean CSS variables. Seamless with shadcn/ui, Tailwind, and Next.js App Router.
+      </p>
+
+      <div className="preview-hero__actions">
+        <a href="#quickstart" className="preview-btn preview-btn--primary">
+          Quick Start <${ArrowRight} size=${16} />
+        </a>
+        <a
+          href="https://github.com/manovee/iconmoji"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="preview-btn preview-btn--secondary">
+          <${Github} size=${16} /> Star on GitHub
+        </a>
+        <button type="button" className="preview-command-pill" onClick=${onCopy} title="Click to copy install command">
+          <code>${copyCommand}</code>
+          ${copied ? html`<${Check} size=${14} />` : html`<${CopyIcon} size=${14} />`}
+        </button>
+      </div>
+
+      <div className="preview-features-grid">
+        ${FEATURES.map(
+          (f) => html`
+            <div key=${f.title} className="preview-feature-card">
+              <div className="preview-feature-icon">
+                <${f.icon} size=${18} />
+              </div>
+              <h4>${f.title}</h4>
+              <p>${f.description}</p>
+            </div>
+          `
+        )}
+      </div>
+    </header>
+  `;
+}
+
+function QuickStartSection() {
+  const [manager, setManager] = useState("pnpm");
+  const command = INSTALL_COMMANDS[manager];
+
+  return html`
+    <section id="quickstart" className="preview-quickstart">
+      <div className="preview-doc-card__header">
+        <div>
+          <p className="preview-eyebrow">Get Started in 30 Seconds</p>
+          <h3>Simple 3-Step Setup</h3>
+        </div>
+
+        <div className="preview-mini-tabs" role="tablist" aria-label="Package manager">
+          ${Object.keys(INSTALL_COMMANDS).map(
+            (item) => html`
+              <button
+                key=${item}
+                type="button"
+                className=${manager === item ? "is-active" : ""}
+                onClick=${() => setManager(item)}>
+                ${item}
+              </button>
+            `
+          )}
+        </div>
+      </div>
+
+      <div className="preview-steps-grid">
+        <div className="preview-step-card">
+          <div className="preview-step-number">1</div>
+          <div className="preview-step-content">
+            <h4>Install package</h4>
+            <p>Add <code>@manovee/iconmoji</code> and peer dependencies</p>
+            <div className="preview-inline-command preview-inline-command--compact">
+              <code>${command}</code>
+              <${CopyButton} text=${command} label="Copy command" />
+            </div>
+          </div>
+        </div>
+
+        <div className="preview-step-card">
+          <div className="preview-step-number">2</div>
+          <div className="preview-step-content">
+            <h4>Import stylesheet</h4>
+            <p>Include the CSS once in your layout or entry file</p>
+            <div className="preview-inline-command preview-inline-command--compact">
+              <code>import "@manovee/iconmoji/styles.css";</code>
+              <${CopyButton} text='import "@manovee/iconmoji/styles.css";' label="Copy import" />
+            </div>
+          </div>
+        </div>
+
+        <div className="preview-step-card">
+          <div className="preview-step-number">3</div>
+          <div className="preview-step-content">
+            <h4>Render picker</h4>
+            <p>Pass state and handler, that's all!</p>
+            <div className="preview-inline-command preview-inline-command--compact">
+              <code>&lt;IconPicker value={value} onChange={setValue} /&gt;</code>
+              <${CopyButton} text='<IconPicker value={value} onChange={setValue} />' label="Copy code" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
 
 const BUILTIN_CODE = `"use client";
 
@@ -242,40 +420,6 @@ function StageShell({ title, eyebrow, mode, setMode, code, children }) {
   `;
 }
 
-function InstallTabs() {
-  const [manager, setManager] = useState("pnpm");
-  const command = INSTALL_COMMANDS[manager];
-
-  return html`
-    <section className="preview-doc-card">
-      <div className="preview-doc-card__header">
-        <div>
-          <p className="preview-eyebrow">Installation</p>
-          <h3>One-line install</h3>
-        </div>
-
-        <div className="preview-mini-tabs" role="tablist" aria-label="Package manager">
-          ${Object.keys(INSTALL_COMMANDS).map(
-            (item) => html`
-              <button
-                key=${item}
-                type="button"
-                className=${manager === item ? "is-active" : ""}
-                onClick=${() => setManager(item)}>
-                ${item}
-              </button>
-            `
-          )}
-        </div>
-      </div>
-
-      <div className="preview-inline-command">
-        <code>${command}</code>
-        <${CopyButton} text=${command} label="Copy" />
-      </div>
-    </section>
-  `;
-}
 
 function PropsTable() {
   return html`
@@ -372,11 +516,31 @@ function App() {
             <span className="preview-brand__mark"></span>
             <div className="preview-brand__copy">
               <strong>iconmoji</strong>
-              <span>preview</span>
+              <span className="preview-badge-pill">v0.1.0</span>
             </div>
           </div>
 
           <div className="preview-topbar__actions">
+            <a
+              href="https://github.com/manovee/iconmoji"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="preview-topbar-link"
+              title="Star on GitHub">
+              <${Github} size=${15} />
+              <span>GitHub</span>
+            </a>
+
+            <a
+              href="https://www.npmjs.com/package/@manovee/iconmoji"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="preview-topbar-link"
+              title="View package on npm">
+              <${Box} size=${15} />
+              <span>npm</span>
+            </a>
+
             <label className="preview-toggle">
               <input
                 type="checkbox"
@@ -396,6 +560,19 @@ function App() {
             </div>
           </div>
         </header>
+
+        <${HeroSection} />
+
+        <${QuickStartSection} />
+
+        <section className="preview-doc-card" style=${{ marginBottom: "20px" }}>
+          <div className="preview-doc-card__header">
+            <div>
+              <p className="preview-eyebrow">Live Playground</p>
+              <h3>Try the components</h3>
+            </div>
+          </div>
+        </section>
 
         <section className="preview-showcase">
           <${StageShell}
@@ -443,26 +620,40 @@ function App() {
         </section>
 
         <section className="preview-doc-stack">
-          <${InstallTabs} />
-
           <section className="preview-doc-card">
             <div className="preview-doc-card__header">
               <div>
-                <p className="preview-eyebrow">Usage</p>
-                <h3>Quick notes</h3>
+                <p className="preview-eyebrow">Integration</p>
+                <h3>Pro Tips</h3>
               </div>
             </div>
             <div className="preview-doc-list">
-              <p>Import <code>@manovee/iconmoji/styles.css</code> once in your app.</p>
-              <p>Rename the tab label to <code>Icons</code> with <code>labels.lucideTab</code>.</p>
-              <p>Use <code>iconNames</code> for a curated subset or <code>searchable={false}</code> for compact pickers.</p>
+              <p>Import <code>@manovee/iconmoji/styles.css</code> once in your application root layout.</p>
+              <p>Use <code>IconPickerPanel</code> inside shadcn/ui <code>Popover</code> or <code>Dialog</code> for custom triggers.</p>
+              <p>Rename the tab label to <code>Icons</code> using <code>labels={{ lucideTab: "Icons" }}</code>.</p>
+              <p>Pass <code>iconNames</code> to restrict icons to a curated subset for tighter product interfaces.</p>
             </div>
           </section>
         </section>
 
         <${PropsTable} />
 
-        <footer className="preview-footer">Built with love in Tiruvannamalai</footer>
+        <footer className="preview-footer">
+          <div>
+            <p>
+              Built with ❤️ by <strong>Manohar V</strong> in Tiruvannamalai. Distributed under the <strong>MIT License</strong>.
+            </p>
+            <div className="preview-footer__links">
+              <a href="https://github.com/manovee/iconmoji" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <span>•</span>
+              <a href="https://www.npmjs.com/package/@manovee/iconmoji" target="_blank" rel="noopener noreferrer">npm</a>
+              <span>•</span>
+              <a href="https://github.com/manovee/iconmoji/issues" target="_blank" rel="noopener noreferrer">Report Issue</a>
+              <span>•</span>
+              <a href="https://github.com/manovee/iconmoji/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License</a>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   `;

@@ -4,21 +4,30 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/manovee/iconmoji/actions/workflows/ci.yml/badge.svg)](https://github.com/manovee/iconmoji/actions/workflows/ci.yml)
 [![Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-orange)](https://manovee.github.io/iconmoji/)
+[![GitHub Stars](https://img.shields.io/github/stars/manovee/iconmoji?style=social)](https://github.com/manovee/iconmoji)
 
-A lightweight, modern icon picker for React and Next.js apps. It ships with:
+A lightweight, accessible, plug-and-play icon and emoji picker for React and Next.js apps.
 
-- A built-in `IconPicker` trigger + popover
-- An `IconPickerPanel` you can mount inside shadcn/ui `Popover`, `Dialog`, or any custom surface
-- Full Lucide icon support via `lucide-react` with category grouping
-- Emoji categories with a denser 7-column grid by default
-- Smart Lucide search through tokenized names and synonym expansion
-- Optional controlled open state for the trigger + popover wrapper
-- Optional icon subsets and search disabling for tighter integrations
-- Zero extra runtime dependencies: only peers are `react` and `lucide-react`
+> 🚀 **[Try the Live Interactive Demo & Playground](https://manovee.github.io/iconmoji/)**
 
-## Install
+---
 
-Install `@manovee/iconmoji` alongside its peer dependencies:
+## ✨ Features
+
+- **⚡️ Zero Bloat (< 140 kB)**: Only peers are `react` and `lucide-react`. No heavy component library dependencies.
+- **🔍 1,500+ Lucide Icons**: Intelligent search with tokenized fuzzy matching, synonym aliases, and category grouping.
+- **😀 Full Emoji Catalog**: Organized 7-column emoji grid with instant mood and keyword lookup.
+- **🎨 100% Themeable**: Built with standard CSS custom properties that naturally adopt your shadcn/ui, Tailwind, or custom dark theme.
+- **🧩 2 Flexible Modes**: Use the built-in popover trigger (`<IconPicker />`) or drop the standalone headless panel (`<IconPickerPanel />`) into any custom Dialog or Drawer.
+- **🚀 Next.js & RSC Ready**: Pre-configured with `"use client"` banners, full TypeScript types, and dual ESM/CJS exports.
+
+---
+
+## ⚡️ Simple Setup
+
+Get up and running in 30 seconds:
+
+### 1. Install
 
 ```bash
 # pnpm
@@ -34,39 +43,15 @@ yarn add @manovee/iconmoji react lucide-react
 bun add @manovee/iconmoji react lucide-react
 ```
 
-For local development in this repo:
+### 2. Import Styles
 
-```bash
-npm install
-npm run build
-```
-
-## Local preview
-
-A small preview page lives in `preview/` and renders the built package straight from `dist/`.
-
-```bash
-npm run dev
-# or for a one-off build + server:
-npm run preview
-```
-
-Then open `http://127.0.0.1:4173/preview/` (or `http://localhost:4173`).
-
-Notes:
-
-- The command rebuilds the package before starting the local server.
-- The preview page loads `react`, `react-dom`, and `lucide-react` from `esm.sh`, so your browser needs internet access while previewing.
-
-## Usage
-
-Import the stylesheet once:
+Import the CSS once in your root layout or entry file (`app/layout.tsx` or `main.tsx`):
 
 ```tsx
 import "@manovee/iconmoji/styles.css";
 ```
 
-Then use the default picker:
+### 3. Use Component
 
 ```tsx
 "use client";
@@ -77,7 +62,7 @@ import { IconPicker, type IconPickerValue } from "@manovee/iconmoji";
 export function Example() {
   const [value, setValue] = useState<IconPickerValue>({
     type: "lucide",
-    value: "FileText",
+    value: "Sparkles",
   });
 
   return <IconPicker value={value} onChange={setValue} />;
